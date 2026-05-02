@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Specification-Title: dehydration
+Specification-Vendor: fan_3body
+Specification-Version: 1
+Implementation-Title: dehydration
+Implementation-Version: 1.0-SNAPSHOT
+Implementation-Vendor: fan_3body
+Implementation-Timestamp: 2026-05-02T21:23:16+0800
+

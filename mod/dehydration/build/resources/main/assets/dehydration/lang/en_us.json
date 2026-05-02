@@ -1,0 +1,7 @@
+{
+  "key.categories.dehydration": "Dehydration",
+  "key.dehydration.trigger": "Toggle Dehydration Mode",
+  "message.dehydration.enter": "Dehydration mode engaged",
+  "message.dehydration.exit": "Dehydration mode disengaged",
+  "message.dehydration.requires_heat_stroke": "Heat stroke is required to trigger dehydration"
+}

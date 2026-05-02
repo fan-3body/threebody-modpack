@@ -1,0 +1,23 @@
+#Mob effects that count as Legendary Survival Overhaul heat stroke.
+heatStrokeEffects = ["legendarysurvivaloverhaul:heat_stroke", "legendarysurvivaloverhaul:heatstroke"]
+#Maximum dehydration mode duration in ticks after K is pressed.
+#Range: 20 ~ 36000
+maxDurationTicks = 1800
+#How often dehydration mode attempts to drain LSO thirst.
+#Range: 20 ~ 1200
+thirstDrainIntervalTicks = 100
+#Amount passed to reflected LSO thirst drain calls when available.
+#Range: 0.0 ~ 20.0
+thirstDrainAmount = 1.0
+#Movement speed multiplier while dehydrated. 0.85 means -15%.
+#Range: 0.05 ~ 2.0
+movementSpeedMultiplier = 0.85
+#Attack damage multiplier while dehydrated. 0.80 means -20%.
+#Range: 0.05 ~ 2.0
+attackDamageMultiplier = 0.8
+#Flat max health penalty while dehydrated.
+#Range: 0.0 ~ 20.0
+maxHealthPenalty = 4.0
+#If true, the server only allows K to enter dehydration mode while heat stroke is active.
+requireHeatStrokeToEnter = true
+
