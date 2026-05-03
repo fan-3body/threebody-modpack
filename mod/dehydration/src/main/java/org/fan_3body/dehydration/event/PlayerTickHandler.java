@@ -8,6 +8,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.fan_3body.dehydration.Dehydration;
@@ -25,6 +26,8 @@ public final class PlayerTickHandler {
     private static final int THIRST_FULL_EXIT_GRACE_TICKS = 20 * 2;
     private static final double DEHYDRATED_MAX_HEALTH = 10.0D;
     private static final UUID MAX_HEALTH_CAP_ID = UUID.fromString("75314c58-8e3f-4029-a9ca-d0eafcc8cccb");
+    private static final ResourceKey<DamageType> LSO_DEHYDRATION_DAMAGE = lsoDamageType("dehydration");
+    private static final ResourceKey<DamageType> LSO_HYPERTHERMIA_DAMAGE = lsoDamageType("hyperthermia");
 
     private PlayerTickHandler() {
     }
@@ -62,6 +65,22 @@ public final class PlayerTickHandler {
         });
     }
 
+
+    @SubscribeEvent
+    public static void onLivingHurt(LivingHurtEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        if (!isLsoDehydrationDamage(event.getSource())) {
+            return;
+        }
+
+        player.getCapability(DehydrationProvider.CAPABILITY).ifPresent(cap -> {
+            if (cap.isDehydrated()) {
+                event.setCanceled(true);
+            }
+        });
+    }
     private static boolean shouldExitDehydration(ServerPlayer player) {
         if (!LsoIntegration.hasHeatStroke(player)) {
             return true;
@@ -69,6 +88,14 @@ public final class PlayerTickHandler {
         return DehydrationStateMachine.getTicksActive(player) > THIRST_FULL_EXIT_GRACE_TICKS && LsoIntegration.isThirstFull(player);
     }
 
+
+    private static boolean isLsoDehydrationDamage(DamageSource source) {
+        return source.is(LSO_DEHYDRATION_DAMAGE) || source.is(LSO_HYPERTHERMIA_DAMAGE);
+    }
+
+    private static ResourceKey<DamageType> lsoDamageType(String path) {
+        return ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(LsoIntegration.LSO_MODID, path));
+    }
     private static void applyDehydrationEffects(ServerPlayer player) {
         applyEffectIfNeeded(player, MobEffects.MOVEMENT_SLOWDOWN, 0, true, true);
         applyEffectIfNeeded(player, MobEffects.DIG_SLOWDOWN, 0, true, true);
